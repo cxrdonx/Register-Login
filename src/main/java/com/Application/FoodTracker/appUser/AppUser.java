@@ -1,4 +1,4 @@
-package com.Application.FoodTracker.AppUser;
+package com.Application.FoodTracker.appUser;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,26 +7,39 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 public class AppUser implements UserDetails {
+
+    @SequenceGenerator(
+            name = "student_sequence",
+            sequenceName = "Student_sequence",
+            allocationSize = 1
+    )
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_sequence"
+    )
+
     private Long id;
     private String name;
     private String username;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked;
     private Boolean enabled;
 
-    public AppUser(Long id, String name, String username, String email, String password, UserRole userRole, Boolean locked, Boolean enabled) {
-        this.id = id;
+    public AppUser(String name, String username, String email, String password, UserRole userRole, Boolean locked, Boolean enabled) {
         this.name = name;
         this.username = username;
         this.email = email;
